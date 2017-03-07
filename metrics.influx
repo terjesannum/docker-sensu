@@ -1,0 +1,6 @@
+create database metrics;
+create user admin with password 'admin' with all privileges;
+create user sensu with password 'sensu';
+grant all on metrics to sensu;
+create user grafana with password 'grafana';
+grant all on metrics to grafana
