@@ -1,0 +1,17 @@
+{
+  "checks": {
+    "check_random": {
+      "handlers": ["default"],
+      "command": "(i=`shuf -i0-2 -n1`; echo Random: $i; exit $i)",
+      "interval": 60,
+      "standalone": true
+    },
+    "metric_random": {
+      "type": "metric",
+      "command": "echo random `shuf -i0-100 -n1` `date +%s`",
+      "handlers": ["metrics"],
+      "interval": 60,
+      "standalone": true
+    }
+  }
+}
