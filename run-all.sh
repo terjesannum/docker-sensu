@@ -11,3 +11,4 @@ cat $DIR/metrics.influx | docker exec -i influxdb influx
 docker run -d --rm --name=sensu-server --link sensu-api --link redis --link rabbitmq --link influxdb -v $DIR/volumes/sensu/logs:/var/log/sensu terjesannum/sensu-server:1
 docker run -d --rm --name=sensu-client -p 3030:3030 --link rabbitmq -v $DIR/volumes/sensu/logs:/var/log/sensu terjesannum/sensu-client:1
 docker run -d --rm --name=grafana -p 3001:3000 --link influxdb -v $DIR/volumes/grafana/lib:/var/lib/grafana grafana/grafana:4.1.2
+$DIR/write-metrics.pl
