@@ -17,7 +17,7 @@ $tag = 'zot';
 $series = 10;
 $batch = 50;
 $total = 10000;
-$start_time = time - 60*60*24;
+$start_time = time - 60*60;
 $end_time = time;
 
 GetOptions("output=s", \$output,
@@ -40,8 +40,8 @@ $ua = LWP::UserAgent->new;
 
 $data = [];
 for($i=0; $i<$total; $i++) {
-    $t = $start_time + $i * (($end_time - $start_time) / ($total - 1));
-    push(@$data, sprintf("%s,%s=%d value=%d %d", $measurement, $tag, $i % $series, ($i+$i%$series)%100, ($t*1000*1000*1000)+($i%1000)));
+    $t = $start_time + $i * ($end_time - $start_time) / $total;
+    push(@$data, sprintf("%s,%s=%d value=%f %d", $measurement, $tag, $i % $series, sin(2*3.14*($i%$series)/$series + $i*2*3.14/$total), ($t*1000*1000*1000)+($i%1000)));
     if($i && !($i % $batch)) {
         write_data($data);
         $data = [];
@@ -67,7 +67,7 @@ sub write_influx {
     my($req) = HTTP::Request->new(POST => "$influx_url/write?db=$influx_db&u=$influx_user&p=$influx_password");
     $req->content(join("\n", @$data));
     my($res) = $ua->request($req);
-    warn("write error: %s\n", $res->code) if(!$res->is_success);
+    warn(sprintf("write error: %s\n", $res->code)) if(!$res->is_success);
 }
 
 sub write_sensu {
@@ -77,15 +77,18 @@ sub write_sensu {
         PeerPort => $sensu_port,
         Proto => 'tcp',
         );
-    warn "Couldn't connect to sensu socket.\n" unless($socket);
-    my $msg = sprintf('{"name":"%s","type":"metric","handlers":["events_nano"],"output":"%s"}',$measurement, join("\\n", @$data));
-    my $l = $socket->send($msg);
-    if($l == length($msg)) {
-        my $res = '';
-        $socket->recv($res, 1024);
-        warn("write error: %s\n", $res) if($res ne 'ok');
+    if($socket) {
+        my $msg = sprintf('{"name":"%s","type":"metric","handlers":["events_nano"],"output":"%s"}',$measurement, join("\\n", @$data));
+        my $l = $socket->send($msg);
+        if($l == length($msg)) {
+            my $res = '';
+            $socket->recv($res, 1024);
+            warn(sprintf("write error: %s\n", $res)) if($res ne 'ok');
+        } else {
+            warn("Socket write error.\n");
+        }
+        $socket->close();
     } else {
-        warn("Socket write error.\n");
+        warn "Couldn't connect to sensu socket.\n" unless($socket);
     }
-    $socket->close();
 }
