@@ -1,4 +1,4 @@
-FROM terjesannum/sensu-base:1
+FROM terjesannum/sensu-base:2
 LABEL maintainer "terje@offpiste.org"
 
 EXPOSE 4567
