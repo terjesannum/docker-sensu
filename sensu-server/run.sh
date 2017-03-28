@@ -22,6 +22,7 @@ cat << EOF > /etc/sensu/conf.d/influxdb-proxy-extension.json
     "username": "$INFLUXDB_USER",
     "password": "$INFLUXDB_PASSWORD",
     "buffer_size": $PROXY_BUFFER_SIZE,
+    "proxy_mode": true,
     "precision": "s"
   }
 }
@@ -36,6 +37,7 @@ cat << EOF > /etc/sensu/conf.d/influxdb-proxy-extension-nano.json
     "username": "$INFLUXDB_USER",
     "password": "$INFLUXDB_PASSWORD",
     "buffer_size": $PROXY_BUFFER_SIZE,
+    "proxy_mode": true,
     "precision": "n"
   }
 }
