@@ -27,7 +27,7 @@ ENV PROXY_BUFFER_SIZE 1000
 VOLUME /var/log/sensu
 
 RUN mkdir -p /etc/sensu/extensions
-RUN curl https://raw.githubusercontent.com/jhrv/sensu-influxdb-extension/master/influxdb-extension.rb > /etc/sensu/extensions/influxdb-extension.rb
+RUN curl https://raw.githubusercontent.com/jhrv/sensu-influxdb-extension/1.7/influxdb-extension.rb > /etc/sensu/extensions/influxdb-extension.rb
 RUN cat /etc/sensu/extensions/influxdb-extension.rb | sed 's/influxdb-extension/influxdb-proxy-extension/g' | sed 's/InfluxDB/InfluxDBProxy/g' > /etc/sensu/extensions/influxdb-proxy-extension.rb
 RUN cat /etc/sensu/extensions/influxdb-extension.rb | sed 's/influxdb-extension/influxdb-proxy-extension-nano/g' | sed 's/InfluxDB/InfluxDBNanoProxy/g' > /etc/sensu/extensions/influxdb-proxy-extension-nano.rb
 
