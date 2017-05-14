@@ -1,0 +1,12 @@
+{
+  "handlers": {
+    "events_nano": {
+      "type": "set",
+      "handlers": ["influxdb-extension"]
+    }
+  },
+  "influxdb-extension": {
+    "proxy_mode": true,
+    "precision": "n"
+  }
+}
