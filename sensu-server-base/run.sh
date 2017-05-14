@@ -16,7 +16,7 @@ cat << EOF > /etc/sensu/conf.d/sensu.json
   },
   "extensions": {
     "influxdb": {
-      "gem": "sensu-extensions-influxdb",
+      "gem": "sensu-extensions-influxdb"
     }
   }
 }
