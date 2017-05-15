@@ -22,10 +22,11 @@ ENV RABBITMQ_USER=guest
 ENV RABBITMQ_PASSWORD=guest
 
 ENV BUFFER_SIZE 1000
+ENV BUFFER_MAX_AGE 10
 
 VOLUME /var/log/sensu
 
-RUN sensu-install -e influxdb
+RUN /opt/sensu/embedded/bin/gem install -v 2.1.0 sensu-extensions-influxdb
 
 COPY run.sh /opt/
 CMD ["/opt/run.sh"]

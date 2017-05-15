@@ -1,8 +1,0 @@
-{
-  "handlers": {
-    "metrics": {
-      "type": "set",
-      "handlers": ["influxdb-extension"]
-    }
-  }
-}

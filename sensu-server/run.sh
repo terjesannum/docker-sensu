@@ -12,6 +12,18 @@ cat << EOF > /etc/sensu/conf.d/sensu.json
     "default": {
       "type": "pipe",
       "command": "cat"
+    },
+    "metrics": {
+      "type": "set",
+      "handlers": ["influxdb-extension"]
+    },
+    "events": {
+      "type": "set",
+      "handlers": ["influxdb-extension"]
+    },
+    "events_nano": {
+      "type": "set",
+      "handlers": ["influxdb-extension"]
     }
   },
   "extensions": {
@@ -51,7 +63,17 @@ cat << EOF > /etc/sensu/conf.d/influxdb-extension.json
     "database": "$INFLUXDB_DATABASE",
     "username": "$INFLUXDB_USER",
     "password": "$INFLUXDB_PASSWORD",
-    "buffer_size": $BUFFER_SIZE
+    "buffer_size": $BUFFER_SIZE,
+    "buffer_max_age": $BUFFER_MAX_AGE,
+    "additional_handlers": ["events", "events_nano"]
+  },
+  "events": {
+    "proxy_mode": true,
+    "precision": "s"
+  },
+  "events_nano": {
+    "proxy_mode": true,
+    "precision": "n"
   }
 }
 EOF
