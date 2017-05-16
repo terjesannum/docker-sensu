@@ -17,6 +17,8 @@ $tag = 'zot';
 $series = 10;
 $batch = 50;
 $total = 10000;
+$base = 0;
+$scale = 1;
 $start_time = time - 60*60;
 $end_time = time;
 
@@ -32,6 +34,8 @@ GetOptions("output=s", \$output,
            "series=i", \$series,
            "batch=i", \$batch,
            "total=i", \$total,
+           "base=f", \$base,
+           "scale=i", \$scale,
            "start_time=i", \$start_time,
            "end_time=i", \$end_time
     );
@@ -41,7 +45,7 @@ $ua = LWP::UserAgent->new;
 $data = [];
 for($i=0; $i<$total; $i++) {
     $t = $start_time + $i * ($end_time - $start_time) / $total;
-    push(@$data, sprintf("%s,%s=%d value=%f %d", $measurement, $tag, $i % $series, sin(2*3.14*($i%$series)/$series + $i*2*3.14/$total), ($t*1000*1000*1000)+($i%1000)));
+    push(@$data, sprintf("%s,%s=%d value=%f %d", $measurement, $tag, $i % $series, $scale*($base+sin(2*3.14*($i%$series)/$series + $i*2*3.14/$total)), ($t*1000*1000*1000)+($i%1000)));
     if($i && !($i % $batch)) {
         write_data($data);
         $data = [];
