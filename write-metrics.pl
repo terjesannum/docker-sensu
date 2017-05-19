@@ -19,6 +19,7 @@ $batch = 50;
 $total = 10000;
 $base = 0;
 $scale = 1;
+$generator = 'sine';
 $start_time = time - 60*60;
 $end_time = time;
 
@@ -36,6 +37,7 @@ GetOptions("output=s", \$output,
            "total=i", \$total,
            "base=f", \$base,
            "scale=i", \$scale,
+           "generator=s", \$generator,
            "start_time=i", \$start_time,
            "end_time=i", \$end_time
     );
@@ -45,7 +47,13 @@ $ua = LWP::UserAgent->new;
 $data = [];
 for($i=0; $i<$total; $i++) {
     $t = $start_time + $i * ($end_time - $start_time) / $total;
-    push(@$data, sprintf("%s,%s=%d value=%f %d", $measurement, $tag, $i % $series, $scale*($base+sin(2*3.14*($i%$series)/$series + $i*2*3.14/$total)), ($t*1000*1000*1000)+($i%1000)));
+    if($generator eq 'sine') {
+        push(@$data, sprintf("%s,%s=%d value=%f %d", $measurement, $tag, $i % $series, $scale*($base+sin(2*3.14*($i%$series)/$series + $i*2*3.14/$total)), ($t*1000*1000*1000)+($i%1000)));
+    } elsif($generator eq 'random') {
+        push(@$data, sprintf("%s,%s=%d value=%f %d", $measurement, $tag, $i % $series, $scale*($base+rand), ($t*1000*1000*1000)+($i%1000)));
+    } else {
+        push(@$data, sprintf("%s,%s=%d value=%f %d", $measurement, $tag, $i % $series, $scale*$base, ($t*1000*1000*1000)+($i%1000)));
+    }
     if($i && !($i % $batch)) {
         write_data($data);
         $data = [];

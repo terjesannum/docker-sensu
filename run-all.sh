@@ -13,4 +13,4 @@ docker run -d --rm --name=sensu-client -p 3030:3030 --link rabbitmq -v $DIR/volu
 docker run -d --rm --name=grafana -p 3001:3000 --link influxdb -v $DIR/volumes/grafana/lib:/var/lib/grafana grafana/grafana:4.2.0
 # write some initial data to influxdb
 $DIR/write-metrics.pl
-$DIR/write-metrics.pl --measurement random --tag hostname --series 1 --total 1000 --base 1 --scale 50
+$DIR/write-metrics.pl --measurement random --tag hostname --series 1 --total 1000 --generator random --scale 100
