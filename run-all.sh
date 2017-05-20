@@ -19,5 +19,5 @@ if perl -c $DIR/write-metrics.pl 2>/dev/null; then
     echo
     echo "Write metrics to the sensu socket with 'write-metrics.pl --output sensu [options]'"
 else
-    >&2 echo write-metrics.pl requires perl installed
+    echo write-metrics.pl requires perl installed 1>&2
 fi
