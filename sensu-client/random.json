@@ -10,7 +10,7 @@
       "type": "metric",
       "command": "echo random `shuf -i0-100 -n1` `date +%s`",
       "handlers": ["metrics"],
-      "interval": 60,
+      "interval": 10,
       "standalone": true
     }
   }
