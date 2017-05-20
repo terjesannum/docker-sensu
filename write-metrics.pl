@@ -1,6 +1,5 @@
 #!/usr/bin/perl
 
-use LWP::UserAgent;
 use Getopt::Long;
 use POSIX qw(strftime);
 use IO::Socket::INET;
@@ -42,7 +41,13 @@ GetOptions("output=s", \$output,
            "end_time=i", \$end_time
     );
 
-$ua = LWP::UserAgent->new;
+if($output eq 'influx') {
+    if(eval {require LWP::UserAgent;1;} != 1) {
+        die "libwww-perl required to use influx output\n";
+    }
+    LWP::UserAgent->import();
+    $ua = LWP::UserAgent->new;
+}
 
 $data = [];
 for($i=0; $i<$total; $i++) {
