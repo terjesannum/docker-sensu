@@ -10,7 +10,9 @@ docker run -d --rm --name=sensu-api -p 4567:4567 --link redis --link rabbitmq -v
 docker run -d --rm --name=uchiwa -p 3000:3000 --link sensu-api -v $DIR/volumes/uchiwa/config:/config uchiwa/uchiwa:0.25.2-1
 cat $DIR/metrics.influx | docker exec -i influxdb influx
 docker run -d --rm --name=sensu-server --link sensu-api --link redis --link rabbitmq --link influxdb -v $DIR/volumes/sensu/logs:/var/log/sensu terjesannum/sensu-server:5
-docker run -d --rm --name=sensu-client -p 3030:3030 --link rabbitmq -v $DIR/volumes/sensu/logs:/var/log/sensu terjesannum/sensu-client:3
+docker run -d --rm --name=sensu-socket -p 3030:3030 --link rabbitmq -v $DIR/volumes/sensu/logs:/var/log/sensu sensu-socket:dev
+docker run -d --rm --link rabbitmq -v $DIR/volumes/sensu/logs:/var/log/sensu terjesannum/sensu-client:3
+docker run -d --rm --link rabbitmq -v $DIR/volumes/sensu/logs:/var/log/sensu terjesannum/sensu-client:3
 docker run -d --rm --name=grafana -p 3001:3000 --link influxdb -v $DIR/volumes/grafana/lib:/var/lib/grafana grafana/grafana:4.3.0
 echo Writing some initial data to influxdb...
 if perl -c $DIR/write-metrics.pl 2>/dev/null; then
