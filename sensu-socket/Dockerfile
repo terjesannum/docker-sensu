@@ -11,7 +11,5 @@ ENV RABBITMQ_VHOST=/
 ENV RABBITMQ_USER=guest
 ENV RABBITMQ_PASSWORD=guest
 
-VOLUME /var/log/sensu
-
 COPY run.sh /opt/
 CMD ["/opt/run.sh"]
