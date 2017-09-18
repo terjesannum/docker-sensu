@@ -78,4 +78,4 @@ cat << EOF > /etc/sensu/conf.d/influxdb-extension.json
 }
 EOF
 
-exec /opt/sensu/bin/sensu-server -d /etc/sensu/conf.d -l /var/log/sensu/server-$HOSTNAME.log -L $LOG_LEVEL
+exec /opt/sensu/bin/sensu-server -d /etc/sensu/conf.d -L $LOG_LEVEL

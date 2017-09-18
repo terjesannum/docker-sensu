@@ -17,4 +17,4 @@ cat << EOF > /etc/sensu/conf.d/client.json
 }
 EOF
 
-exec /opt/sensu/bin/sensu-client -d /etc/sensu/conf.d -l /var/log/sensu/client-$HOSTNAME.log -L $LOG_LEVEL
+exec /opt/sensu/bin/sensu-client -d /etc/sensu/conf.d -L $LOG_LEVEL
